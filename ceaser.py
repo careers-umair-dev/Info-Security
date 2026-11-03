@@ -2,10 +2,11 @@ import tkinter as tk
 from tkinter import messagebox
 
 # Caesar Cipher Encryption
-def encrypt(text, key):
+def encrypt_text(text, key):
     result = ""
+
     for char in text:
-        if char.isalpha():  # process only letters
+        if char.isalpha():
             shift = 65 if char.isupper() else 97
             result += chr((ord(char) - shift + key) % 26 + shift)
         else:
@@ -13,43 +14,51 @@ def encrypt(text, key):
     return result
 
 # Caesar Cipher Decryption
-def decrypt(text, key):
-    return encrypt(text, -key)
-
-# Encrypt button function
-def encrypt_text():
+def decrypt_text(text, key):
+    return encrypt_text(text, -key)
+    
+# Encrypt Button Function
+def encrypt_button():
     try:
         key = int(key_entry.get())
         text = input_entry.get("1.0", tk.END).strip()
-        encrypted = encrypt(text, key)
+
+        encrypted = encrypt_text(text, key)
+
         encrypt_entry.delete("1.0", tk.END)
         encrypt_entry.insert(tk.END, encrypted)
+
     except ValueError:
         messagebox.showerror("Invalid Input", "Key must be an integer.")
 
-# Decrypt button function
-def decrypt_text():
+# Decrypt Button Function
+def decrypt_button():
     try:
         key = int(key_entry.get())
         text = encrypt_entry.get("1.0", tk.END).strip()
-        decrypted = decrypt(text, key)
+
+        decrypted = decrypt_text(text, key)
+
         decrypt_entry.delete("1.0", tk.END)
         decrypt_entry.insert(tk.END, decrypted)
+
     except ValueError:
         messagebox.showerror("Invalid Input", "Key must be an integer.")
 
-# GUI setup
+# GUI Setup
 root = tk.Tk()
 root.title("Caesar Cipher GUI")
 root.geometry("600x500")
 
-# Input label and text box
+# Input Text Box
 tk.Label(root, text="Enter Text:").pack(pady=5)
+
 input_entry = tk.Text(root, height=3, width=40)
 input_entry.pack(pady=5)
 
-# Key input
+# Key Input
 tk.Label(root, text="Enter Key (integer):").pack(pady=5)
+
 key_entry = tk.Entry(root, width=10)
 key_entry.pack(pady=5)
 
@@ -57,20 +66,40 @@ key_entry.pack(pady=5)
 button_frame = tk.Frame(root)
 button_frame.pack(pady=10)
 
-encrypt_button = tk.Button(button_frame, text="Encrypt", command=encrypt_text, width=10)
-encrypt_button.grid(row=0, column=0, padx=5)
+encrypt_btn = tk.Button(
+    button_frame,
+    text="Encrypt",
+    command=encrypt_button,
+    width=10
+)
+encrypt_btn.grid(row=0, column=0, padx=5)
 
-decrypt_button = tk.Button(button_frame, text="Decrypt", command=decrypt_text, width=10)
-decrypt_button.grid(row=0, column=1, padx=5)
+decrypt_btn = tk.Button(
+    button_frame,
+    text="Decrypt",
+    command=decrypt_button,
+    width=10
+)
+decrypt_btn.grid(row=0, column=1, padx=5)
 
-exit_button = tk.Button(button_frame, text="Exit", command=root.quit, width=10, fg="red")
-exit_button.grid(row=0, column=2, padx=5)
+exit_btn = tk.Button(
+    button_frame,
+    text="Exit",
+    command=root.quit,
+    width=10,
+    fg="red"
+)
+exit_btn.grid(row=0, column=2, padx=5)
 
-# Output label and text box
+# Encryption Output
 tk.Label(root, text="Encrypt Result:").pack(pady=5)
+
 encrypt_entry = tk.Text(root, height=3, width=40)
 encrypt_entry.pack(pady=5)
+
+# Decryption Output
 tk.Label(root, text="Decrypt Result:").pack(pady=5)
+
 decrypt_entry = tk.Text(root, height=3, width=40)
 decrypt_entry.pack(pady=5)
 
